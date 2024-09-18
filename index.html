@@ -77,14 +77,22 @@
 
 <body>
   <div
-    style="position: fixed; top: 10px; left: 10px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; gap: 10px;">
-    <a onclick="alert('you can&#39;t go back anymore fool.')" 
-   style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none;">↩</a>
-    <!-- Back button -->
-    <button onclick="location.reload();"
-      style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer;">⟳</button>
-    <!-- Reload button -->
+    style="position: fixed; top: 10px; left: 10px; padding: 10px; width: 50px; height: 50px; background-color: transparent;"
+    onmouseover="this.querySelector('.hover-content').style.visibility = 'visible'; this.querySelector('.hover-content').style.opacity = '1';"
+    onmouseout="this.querySelector('.hover-content').style.visibility = 'hidden'; this.querySelector('.hover-content').style.opacity = '0';">
+
+    <div
+      style="position: fixed; top: 10px; left: 10px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; gap: 10px; visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s;"
+      class="hover-content">
+      <a onclick="alert('you can&#39;t go back anymore fool.')"
+        style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none;">↩</a>
+      <!-- Back button -->
+      <button onclick="location.reload();"
+        style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer;">⟳</button>
+      <!-- Reload button -->
+    </div>
   </div>
+
   <header>
     SCP Research Site 301 Game Dev Blog
   </header>
@@ -101,7 +109,8 @@
     <div class="blog-entry">
       <h1>(3) All Down from here... 9/18/2024 5:15 PM</h1>
       <img src="screenshots/Screenshot 2024-09-18 171515.png" alt="Screenshot of progress in Roblox Studio">
-      <p>I am steadily making progress down to the <a href="site301map.html">Echo</a> sector. just building foundations right now. if you were to join, fly would probably be necessary.</p>
+      <p>I am steadily making progress down to the <a href="site301map.html">Echo</a> sector. just building foundations
+        right now. if you were to join, fly would probably be necessary.</p>
     </div>
 
     <div class="blog-entry">

@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /*overflow: hidden;*/
-        background-color: #f0f0f0;
-      }
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div style="position: fixed; top: 10px; left: 10px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; gap: 10px;">
-      <a href="index.html" style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none;">↩</a> <!-- Back button -->
-      <button onclick="location.reload();" style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer;">⟳</button> <!-- Reload button -->
+
+<head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /*overflow: hidden;*/
+      background-color: #f0f0f0;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    style="position: fixed; top: 10px; left: 10px; padding: 10px; width: 50px; height: 50px; background-color: transparent;"
+    onmouseover="this.querySelector('.hover-content').style.visibility = 'visible'; this.querySelector('.hover-content').style.opacity = '1';"
+    onmouseout="this.querySelector('.hover-content').style.visibility = 'hidden'; this.querySelector('.hover-content').style.opacity = '0';">
+
+    <div
+      style="position: fixed; top: 10px; left: 10px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; gap: 10px; visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s;"
+      class="hover-content">
+      <a href="index.html"
+        style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none;">↩</a>
+      <!-- Back button -->
+      <button onclick="location.reload();"
+        style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer;">⟳</button>
+      <!-- Reload button -->
     </div>
-    <img src="images/scpsurfacemapof301.png" alt="scp map part 1">
-  </body>
+  </div>
+  <img src="images/scpsurfacemapof301.png" alt="scp map part 1">
+</body>
+
 </html>
