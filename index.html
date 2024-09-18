@@ -9,41 +9,87 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      /*overflow: hidden;*/
       background-color: #f0f0f0;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0;
+    header {
+      width: 100%;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      font-size: 3em;
     }
+
     nav {
       width: 100%;
       height: 10%;
       background-color: cadetblue;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
     }
-    nav > a {
+
+    nav>a {
       font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
       font-size: xx-large;
       color: black;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+
+    #blog-container {
+      margin-top: 100px;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    .blog-entry {
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .blog-entry img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px 0;
+    }
+
+    .blog-entry h1 {
+      font-size: 2em;
+      color: #333;
+    }
+
+    .blog-entry p {
+      font-size: 1.2em;
+      color: #555;
     }
   </style>
 </head>
 
 <body>
+  <header>
+    Roblox SCP Game Dev Blog
+  </header>
+
   <nav>
     <a href="site301map.html">Underground map</a>
     <a> | </a>
-    <a href="site301surfacemap.html">surface map</a>
+    <a href="site301surfacemap.html">Surface map</a>
     <a> | </a>
-    <a href="site301residentialcomplexmap.html">residential complex map</a>
+    <a href="site301residentialcomplexmap.html">Residential complex map</a>
   </nav>
-  <div>
-    <h1>BEAUTIFUL PROGRESS 9/18/2024 4:30</h1>
-    <img src="screenshots/Screenshot 2024-09-18 162926.png">
-    <p>Progress is going great! I have the basic outlines for the <a href="site301surfacemap.html">surface</a> built up in roblox studio!</p>
+
+  <div id="blog-container">
+    <!-- First Blog Entry -->
+    <div class="blog-entry">
+      <h1>BEAUTIFUL PROGRESS 9/18/2024 4:30</h1>
+      <img src="screenshots/Screenshot 2024-09-18 162926.png" alt="Screenshot of progress in Roblox Studio">
+      <p>Progress is going great! I have the basic outlines for the <a href="site301surfacemap.html">surface</a> built up
+        in Roblox Studio!</p>
+    </div>
 
   </div>
 </body>
