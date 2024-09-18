@@ -108,11 +108,9 @@
 
     <div class="blog-entry">
       <h1>(4) Echo Foundation complete 9/18/2024 5:38 PM</h1>
-      <div class="carousel" style="position: relative; width: 100%; height: auto;">
-        <img src="screenshots/Screenshot 2024-09-18 173740.png" alt="Screenshot 1"
-          style="width: 100%; height: auto; position: absolute; transition: all 1s ease;">
-        <img src="screenshots/Screenshot 2024-09-18 173748.png" alt="Screenshot 2"
-          style="width: 100%; height: auto; position: absolute; transition: all 1s ease; opacity: 0;">
+      <div class="carousel" style="position: relative; width: 100%; height: auto; overflow: hidden;">
+        <img src="screenshots/Screenshot 2024-09-18 173740.png" alt="Screenshot 1" style="width: 100%; height: auto; position: absolute; transition: opacity 1s ease; opacity: 1;">
+        <img src="screenshots/Screenshot 2024-09-18 173748.png" alt="Screenshot 2" style="width: 100%; height: auto; position: absolute; transition: opacity 1s ease; opacity: 0;">
       </div>
       <p>Echo foundations complete. Will now work towards helix sector...</p>
     </div>
@@ -144,16 +142,16 @@
     function initializeCarousel(carousel) {
       let currentIndex = 0;
       let images = carousel.querySelectorAll('img');
-
+  
       function switchImage() {
         images[currentIndex].style.opacity = 0;  // Hide current image
         currentIndex = (currentIndex + 1) % images.length;  // Move to the next image
         images[currentIndex].style.opacity = 1;  // Show next image
       }
-
+  
       setInterval(switchImage, 10000);  // Switch every 10 seconds
     }
-
+  
     document.querySelectorAll('.carousel').forEach(initializeCarousel);
   </script>
 </body>
