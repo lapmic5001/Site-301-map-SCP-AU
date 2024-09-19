@@ -77,22 +77,23 @@
 
 <body>
   <div
-  style="position: fixed; top: 10px; left: 10px; padding: 10px; width: 50px; height: 50px; background-color: transparent;"
+  style="position: fixed; top: 10px; left: 10px; padding: 10px; background-color: transparent;"
   onmouseover="this.querySelector('.hover-content').style.visibility = 'visible'; this.querySelector('.hover-content').style.opacity = '1';"
   onmouseout="this.querySelector('.hover-content').style.visibility = 'hidden'; this.querySelector('.hover-content').style.opacity = '0';">
 
   <div
-    style="position: absolute; top: 0; left: 60px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; flex-direction: column; align-items: flex-start; visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s;"
+    style="position: absolute; top: 0; left: 60px; background-color: #333; padding: 10px; border-radius: 5px; display: flex; flex-direction: row; align-items: center; visibility: hidden; opacity: 0; transition: visibility 0s, opacity 0.5s;"
     class="hover-content">
     <a onclick="alert('you can&#39;t go back anymore fool.')"
-      style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none;">↩</a>
+      style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; text-decoration: none; margin-right: 10px;">↩</a>
     <!-- Back button -->
     <button onclick="location.reload();"
-      style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer;">⟳</button>
+      style="color: white; background-color: transparent; border: none; font-size: 1.5em; cursor: pointer; margin-right: 10px;">⟳</button>
     <!-- Reload button -->
-    <p style="color: white; margin: 0; padding: 5px 0;">blog5-upd4</p>
+    <p style="color: white; margin: 0;">blog5-upd5</p>
   </div>
 </div>
+
 
 
   <header>
