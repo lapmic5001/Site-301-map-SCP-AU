@@ -144,13 +144,14 @@
   </nav>
   <div id="blog-container">
 
-    <!--<div class="blog-entry" id="blog5">
+    <div class="blog-entry" id="blog5">
       <h1>(8) Audio Sneak Peaks 9/19/2024 3:45 PM</h1>
-      <div class="audioFrame" style="position: relative; width: 100%; height: 400px; overflow: hidden;">
-        <audio src="audios/Kondraki's Theme_ King of Butterflies (SCP AU).mp3">
+      <div class="audioFrame">
+        <audio id="audio" src="audios/Kondraki's Theme_ King of Butterflies (SCP AU).mp3" controls></audio>
+        <canvas id="visualizer"></canvas>
       </div>
-      <p>Sneak peak to some boss music, composed by your very own; <a href="https://onlinesequencer.net/members/142671">Twinrova</a>!</p>
-    </div>-->
+      <p>Sneak peek to some boss music, composed by your very own; <a href="https://onlinesequencer.net/members/142671">Twinrova</a>!</p>
+    </div>
 
     <div class="blog-entry" id="blog7">
       <h1>(7) Concept art + funny 9/18/2024 9:45 PM</h1>
@@ -246,6 +247,47 @@
 
     document.querySelectorAll('.carousel').forEach(initializeCarousel);
   </script>
+  <script>
+    const audio = document.getElementById('audio');
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    function draw() {
+      requestAnimationFrame(draw);
+      analyser.getByteFrequencyData(dataArray);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let barHeight;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i];
+        ctx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+        ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+        x += barWidth + 1;
+      }
+    }
+
+    audio.onplay = () => {
+      audioCtx.resume().then(() => {
+        draw();
+      });
+    };
+    </script>
 </body>
 
 </html>
