@@ -120,6 +120,34 @@
       font-size: 1.2em;
       color: #555;
     }
+    .audioFrame {
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 200px;
+      background: black;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .controls button,
+    .controls input[type="range"] {
+      margin: 0 10px;
+    }
+
+    .song-info {
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
   </style>
 </head>
 
@@ -130,8 +158,9 @@
     </div>
     <div class="hover-content">
       <a onclick="alert('you can&#39;t go back anymore fool.')">↩</a>
-      <button onclick="location.reload();">⟳</button><p>update: </p>
-      <p>blog7-upd2</p>
+      <button onclick="location.reload();">⟳</button>
+      <p>update: </p>
+      <p>blog8-upd1</p>
     </div>
   </header>
 
@@ -144,12 +173,19 @@
   </nav>
   <div id="blog-container">
 
-    <div class="blog-entry" id="blog5">
+    <div class="blog-entry" data-song="Kondraki's Theme_ King of Butterflies (SCP AU).mp3" data-author="Twinrova">
       <h1>(8) Audio Sneak Peaks 9/19/2024 3:45 PM</h1>
       <div class="audioFrame">
-        <audio id="audio" src="audios/Kondraki's Theme_ King of Butterflies (SCP AU).mp3" controls></audio>
-        <canvas id="visualizer"></canvas>
+        <audio controls></audio>
+        <canvas></canvas>
       </div>
+      <div class="controls">
+        <button class="play-pause">Play</button>
+        <button class="loop">Loop</button>
+        <input type="range" class="volume" min="0" max="100" value="100">
+        <input type="range" class="progress" value="0" step="1">
+      </div>
+      <div class="song-info"></div>
       <p>Sneak peek to some boss music, composed by your very own; <a href="https://onlinesequencer.net/members/142671">Twinrova</a>!</p>
     </div>
 
@@ -158,16 +194,17 @@
       <div class="carousel" style="position: relative; width: 100%; height: 400px; overflow: hidden;">
         <img src="images/floodlightsystemidea.png" alt="floodlight system idea concept art"
           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; transition: opacity 1s ease; opacity: 1;">
-          <img src="images/invsystemidea.png" alt="inventory menu system idea"
+        <img src="images/invsystemidea.png" alt="inventory menu system idea"
           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; transition: opacity 1s ease; opacity: 0;">
-          <img src="images/idkwtfthisisidea.png" alt="rando I found on yt shorts"
+        <img src="images/idkwtfthisisidea.png" alt="rando I found on yt shorts"
           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; transition: opacity 1s ease; opacity: 0;">
         <img src="screenshots/Screenshot 2024-09-18 214321.png" alt="funny1"
           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; transition: opacity 1s ease; opacity: 0;">
         <img src="screenshots/Screenshot 2024-09-18 214421.png" alt="funny2"
           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; transition: opacity 1s ease; opacity: 0;">
       </div>
-      <p>Stuff for inv system, floodlight system against eyes, and also a weird chemical flashlight I saw on <a href="https://www.youtube.com/watch?v=io8xRpadUoU">yt shorts.</a></p>
+      <p>Stuff for inv system, floodlight system against eyes, and also a weird chemical flashlight I saw on <a
+          href="https://www.youtube.com/watch?v=io8xRpadUoU">yt shorts.</a></p>
     </div>
 
     <div class="blog-entry" id="blog6">
@@ -247,47 +284,94 @@
 
     document.querySelectorAll('.carousel').forEach(initializeCarousel);
   </script>
+  <!--AUDIOVISUALIZERS HAHAHAHAHAHHAHAAHAHAHHAHAHHAAHAHAAHAHHAAHAHA
+  AHAHAHAAHAHAHA-->
   <script>
-    const audio = document.getElementById('audio');
-    const canvas = document.getElementById('visualizer');
-    const ctx = canvas.getContext('2d');
+    document.querySelectorAll('.blog-entry').forEach(entry => {
+      const audio = entry.querySelector('audio');
+      const canvas = entry.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const songInfo = entry.querySelector('.song-info');
+      const playPauseButton = entry.querySelector('.play-pause');
+      const loopButton = entry.querySelector('.loop');
+      const volumeSlider = entry.querySelector('.volume');
+      const progressSlider = entry.querySelector('.progress');
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
+      const song = entry.getAttribute('data-song');
+      const author = entry.getAttribute('data-author');
 
-    analyser.fftSize = 256;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+      // Set audio source
+      audio.src = `audios/${song}`;
+      songInfo.textContent = `Now Playing: ${song} by ${author}`;
 
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+      // Web Audio API setup
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      analyser.fftSize = 256;
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
 
-    function draw() {
-      requestAnimationFrame(draw);
-      analyser.getByteFrequencyData(dataArray);
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const barWidth = (canvas.width / bufferLength) * 2.5;
-      let barHeight;
-      let x = 0;
+      function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let x = 0;
 
-      for (let i = 0; i < bufferLength; i++) {
-        barHeight = dataArray[i];
-        ctx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
-        ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-        x += barWidth + 1;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i];
+          ctx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+          ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+          x += barWidth + 1;
+        }
       }
-    }
 
-    audio.onplay = () => {
-      audioCtx.resume().then(() => {
-        draw();
+      audio.onplay = () => {
+        audioCtx.resume().then(() => {
+          draw();
+        });
+      };
+
+      // Play/Pause Button
+      playPauseButton.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          playPauseButton.textContent = 'Pause';
+        } else {
+          audio.pause();
+          playPauseButton.textContent = 'Play';
+        }
       });
-    };
-    </script>
+
+      // Loop Button
+      loopButton.addEventListener('click', () => {
+        audio.loop = !audio.loop;
+        loopButton.textContent = audio.loop ? 'Unloop' : 'Loop';
+      });
+
+      // Volume Slider
+      volumeSlider.addEventListener('input', () => {
+        audio.volume = volumeSlider.value / 100;
+      });
+
+      // Progress Slider
+      audio.addEventListener('timeupdate', () => {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressSlider.value = progress || 0;
+      });
+
+      progressSlider.addEventListener('input', () => {
+        const newTime = (progressSlider.value / 100) * audio.duration;
+        audio.currentTime = newTime;
+      });
+    });
+  </script>
 </body>
 
 </html>
