@@ -121,33 +121,111 @@
       color: #555;
     }
 
-    .audioFrame {
-      position: relative;
-      width: 100%;
-      height: 400px;
-    }
-
-    canvas {
-      width: 100%;
-      height: 200px;
-      background: black;
-    }
-
     .controls {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
       margin-top: 10px;
     }
 
-    .controls button,
-    .controls input[type="range"] {
-      margin: 0 10px;
+    button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
     }
 
+    button:hover {
+      background-color: #333;
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+
+    /* Audiovisualizer Container */
+    .audiovisualizer-container {
+      width: 100%;
+      height: 400px;
+      background-color: white;
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      /* or a fixed value like 90% */
+      max-width: 500px;
+      /* limit the width */
+      margin: 0 auto;
+      /* centers the visualizer within the blog post */
+    }
+
+    /* Audiovisualizer Bars */
+    .audiovisualizer-bars {
+      width: 100%;
+      height: 70%;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+    }
+
+    .audiovisualizer-bars div {
+      width: 4px;
+      background-color: black;
+      animation: bounce 1s infinite;
+    }
+
+    /* Keyframes for the bouncing effect */
+    @keyframes bounce {
+
+      0%,
+      100% {
+        height: 20px;
+      }
+
+      50% {
+        height: 120px;
+      }
+    }
+
+    /* More bars */
+    .audiovisualizer-bars div:nth-child(odd) {
+      animation-delay: 0.2s;
+    }
+
+    .audiovisualizer-bars div:nth-child(even) {
+      animation-delay: 0.4s;
+    }
+
+    /* Song Info Styling */
     .song-info {
-      margin: 10px 0;
-      font-size: 1.2em;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .text-box {
+      background-color: white;
+      border: 2px solid black;
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Progress Bar */
+    #progress-bar {
+      width: 100%;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -161,7 +239,7 @@
       <a onclick="alert('you can&#39;t go back anymore fool.')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>update: </p>
-      <p>blog8-upd4</p>
+      <p>blog8-upd5</p>
     </div>
   </header>
 
@@ -176,20 +254,39 @@
 
     <div class="blog-entry" data-song="Kondraki's Theme_ King of Butterflies (SCP AU).mp3" data-author="Twinrova">
       <h1>(8) Audio Sneak Peaks 9/23/2024 10:47 PM</h1>
-      <div class="audioFrame">
-        <audio></audio>
+
+      <div class="audiovisualizer-container">
         <canvas></canvas>
+
+        <div class="song-info">
+          <div class="text-box">
+            <p><strong>Song Name:</strong> <span id="song-name">Kondraki's Theme</span></p>
+            <p><strong>Artist:</strong> <span id="artist-name">Twinrova</span></p>
+            <!--"not work."<input type="range" id="progress" class="progress" value="0" max="100">-->
+
+            <!-- Play/Pause and Repeat Buttons -->
+            <div class="controls">
+              <button class="play-pause">Play</button>
+              <button class="loop">Repeat</button>
+            </div>
+            <br>
+            <!-- Volume control -->
+            <label for="volume-control">Volume:</label>
+            <input type="range" id="volume-control" class="volume" min="0" max="100" value="50">
+          </div>
+        </div>
       </div>
-      <div class="controls">
-        <button class="play-pause">Play</button>
-        <button class="loop">Loop</button>
-        <input type="range" class="volume" min="0" max="100" value="100">
-        <input type="range" class="progress" value="0" step="1">
-      </div>
-      <div class="song-info"></div>
+
+      <audio>
+        <source src="audios/Kondraki's Theme_ King of Butterflies (SCP AU).mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+
+
       <p>Sneak peek to some boss music, composed by your very own; <a
           href="https://onlinesequencer.net/members/142671">Twinrova</a>!</p>
     </div>
+
 
 
     <div class="blog-entry" id="blog7">
@@ -294,54 +391,52 @@
       const audio = entry.querySelector('audio');
       const canvas = entry.querySelector('canvas');
       const ctx = canvas.getContext('2d');
-      const songInfo = entry.querySelector('.song-info');
       const playPauseButton = entry.querySelector('.play-pause');
       const loopButton = entry.querySelector('.loop');
       const volumeSlider = entry.querySelector('.volume');
       const progressSlider = entry.querySelector('.progress');
 
-      const song = entry.getAttribute('data-song');
-      const author = entry.getAttribute('data-author');
+      // Set audio source from the blog entry attributes
+      audio.src = `audios/${entry.getAttribute('data-song')}`;
 
-      // Set audio source
-      audio.src = `audios/${song}`;
-      songInfo.textContent = `Now Playing: ${song} by ${author}`;
-
-      // Web Audio API setup
+      // Audio API setup
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const analyser = audioCtx.createAnalyser();
       const source = audioCtx.createMediaElementSource(audio);
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
-      analyser.fftSize = 256;
+      analyser.fftSize = 512;
+
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
+
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
 
       function draw() {
         requestAnimationFrame(draw);
         analyser.getByteFrequencyData(dataArray);
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         const barWidth = (canvas.width / bufferLength) * 2.5;
         let x = 0;
 
+        // Draw bars
         for (let i = 0; i < bufferLength; i++) {
           const barHeight = dataArray[i];
-          ctx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+          const red = barHeight + 100;
+          const green = 50;
+          const blue = 150 - barHeight / 2;
+
+          ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
           ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
           x += barWidth + 1;
         }
       }
 
-      audio.onplay = () => {
-        audioCtx.resume().then(() => {
-          draw();
-        });
-      };
-
-      // Play/Pause Button
+      // Audio controls
       playPauseButton.addEventListener('click', () => {
         if (audio.paused) {
           audio.play();
@@ -352,29 +447,34 @@
         }
       });
 
-      // Loop Button
       loopButton.addEventListener('click', () => {
         audio.loop = !audio.loop;
         loopButton.textContent = audio.loop ? 'Unloop' : 'Loop';
       });
 
-      // Volume Slider
       volumeSlider.addEventListener('input', () => {
         audio.volume = volumeSlider.value / 100;
       });
 
-      // Progress Slider
+      // Update progress slider and visualizer
       audio.addEventListener('timeupdate', () => {
         const progress = (audio.currentTime / audio.duration) * 100;
         progressSlider.value = progress || 0;
       });
 
       progressSlider.addEventListener('input', () => {
-        const newTime = (progressSlider.value / 100) * audio.duration;
-        audio.currentTime = newTime;
+        audio.currentTime = (progressSlider.value / 100) * audio.duration;
       });
+
+      // Start visualizer when audio plays
+      audio.onplay = () => {
+        audioCtx.resume();
+        draw();
+      };
     });
+
   </script>
+
 </body>
 
 </html>
