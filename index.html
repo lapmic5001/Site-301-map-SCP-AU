@@ -239,7 +239,7 @@
       <a onclick="alert('you can&#39;t go back anymore fool.')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>update: </p>
-      <p style="font-size: .5em;">blog9-upd1</p>
+      <p style="font-size: .5em;">blog9-upd2</p>
     </div>
   </header>
 
@@ -416,6 +416,15 @@
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
       analyser.fftSize = 512;
+
+      // Ensure the audio is connected to the audio context
+      audio.addEventListener('play', () => {
+        audioCtx.resume().then(() => {
+          source.connect(analyser);
+          analyser.connect(audioCtx.destination);
+          draw(); // Start drawing the visualizer
+        });
+      });
 
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
