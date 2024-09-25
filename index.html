@@ -239,7 +239,7 @@
       <a onclick="alert('you can&#39;t go back anymore fool.')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>update: </p>
-      <p style="font-size: .5em;">blog9-upd2</p>
+      <p style="font-size: .5em;">9-u3</p>
     </div>
   </header>
 
@@ -420,8 +420,6 @@
       // Ensure the audio is connected to the audio context
       audio.addEventListener('play', () => {
         audioCtx.resume().then(() => {
-          source.connect(analyser);
-          analyser.connect(audioCtx.destination);
           draw(); // Start drawing the visualizer
         });
       });
