@@ -11,7 +11,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #f0f0f0;
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       background-color: darkgoldenrod;
     }
@@ -239,7 +238,7 @@
       <a onclick="alert('you can&#39;t go back anymore fool.')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>update: </p>
-      <p style="font-size: .5em;">9-u3</p>
+      <p style="font-size: .75em;">9.3.1</p>
     </div>
   </header>
 
@@ -381,22 +380,19 @@
   <script>
     function initializeCarousel(carousel) {
       let currentIndex = 0;
-      let images = carousel.querySelectorAll('img');
+      const images = carousel.querySelectorAll('img');
 
       function switchImage() {
-        images[currentIndex].style.opacity = 0;  // Hide current image
-        currentIndex = (currentIndex + 1) % images.length;  // Move to the next image
-        images[currentIndex].style.opacity = 1;  // Show next image
+        images[currentIndex].style.opacity = 0;
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].style.opacity = 1;
       }
 
-      setInterval(switchImage, 10000);  // Switch every 10 seconds
+      setInterval(switchImage, 10000);
     }
 
     document.querySelectorAll('.carousel').forEach(initializeCarousel);
-  </script>
-  <!--AUDIOVISUALIZERS HAHAHAHAHAHHAHAAHAHAHHAHAHHAAHAHAAHAHHAAHAHA
-  AHAHAHAAHAHAHA-->
-  <script>
+
     document.querySelectorAll('.blog-entry').forEach(entry => {
       const audio = entry.querySelector('audio');
       const canvas = entry.querySelector('canvas');
@@ -417,79 +413,68 @@
       analyser.connect(audioCtx.destination);
       analyser.fftSize = 512;
 
-      // Ensure the audio is connected to the audio context
-      audio.addEventListener('play', () => {
-        audioCtx.resume().then(() => {
-          draw(); // Start drawing the visualizer
-        });
-      });
+      let isPlaying = false;
 
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-
-      function draw() {
-        requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const barWidth = (canvas.width / bufferLength) * 2.5;
-        let x = 0;
-
-        // Draw bars
-        for (let i = 0; i < bufferLength; i++) {
-          const barHeight = dataArray[i];
-          const red = barHeight + 100;
-          const green = 50;
-          const blue = 150 - barHeight / 2;
-
-          ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
-          ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-          x += barWidth + 1;
-        }
-      }
-
-      // Audio controls
+      // Play/Pause Button Logic
       playPauseButton.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play();
-          playPauseButton.textContent = 'Pause';
-        } else {
+        if (isPlaying) {
           audio.pause();
           playPauseButton.textContent = 'Play';
+        } else {
+          audioCtx.resume().then(() => {
+            audio.play();
+            playPauseButton.textContent = 'Pause';
+          });
         }
+        isPlaying = !isPlaying;
       });
 
+      // Loop Button Logic
       loopButton.addEventListener('click', () => {
         audio.loop = !audio.loop;
         loopButton.textContent = audio.loop ? 'Unloop' : 'Loop';
       });
 
+      // Volume Control
       volumeSlider.addEventListener('input', () => {
         audio.volume = volumeSlider.value / 100;
       });
 
-      // Update progress slider and visualizer
+      // Progress Bar Logic
       audio.addEventListener('timeupdate', () => {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        progressSlider.value = progress || 0;
+        progressSlider.value = (audio.currentTime / audio.duration) * 100 || 0;
       });
 
       progressSlider.addEventListener('input', () => {
         audio.currentTime = (progressSlider.value / 100) * audio.duration;
       });
 
-      // Start visualizer when audio plays
-      audio.onplay = () => {
-        audioCtx.resume();
-        draw();
-      };
-    });
+      // Visualizer Drawing Function
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
 
+      function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i];
+          ctx.fillStyle = `rgb(${barHeight + 100}, 50, ${150 - barHeight / 2})`;
+          ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+          x += barWidth + 1;
+        }
+      }
+
+      audio.addEventListener('play', () => {
+        draw();
+      });
+    });
   </script>
 
 </body>
