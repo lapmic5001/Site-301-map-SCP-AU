@@ -149,7 +149,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">9.4.0</p>
+      <p style="font-size: .75em;">9.5.0</p>
     </div>
   </header>
 
@@ -240,66 +240,66 @@
 
 
     function createBlogEntry(entry) {
-      const blogEntry = document.createElement('div');
-      blogEntry.className = 'blog-entry';
+    const blogEntry = document.createElement('div');
+    blogEntry.className = 'blog-entry';
 
-      const title = document.createElement('h1');
-      title.innerHTML = entry.title;
-      blogEntry.appendChild(title);
+    const title = document.createElement('h1');
+    title.innerHTML = entry.title;
+    blogEntry.appendChild(title);
 
-      // Handle image carousel
-      if (entry.images && entry.images.length > 0) {
-        const carousel = document.createElement('div');
-        carousel.className = 'carousel';
+    // Handle image carousel
+    if (entry.images && entry.images.length > 0) {
+      const carousel = document.createElement('div');
+      carousel.className = 'carousel';
 
-        entry.images.forEach((src, index) => {
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = `Blog Image ${index + 1}`;
-          img.className = index === 0 ? 'visible' : 'next'; // Set the first image as visible
-          carousel.appendChild(img);
-        });
+      entry.images.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Blog Image ${index + 1}`;
+        img.className = index === 0 ? 'visible' : 'next'; // Set the first image as visible
+        carousel.appendChild(img);
+      });
 
-        blogEntry.appendChild(carousel);
-        setInterval(() => {
-          const images = carousel.querySelectorAll('img');
-          const currentIndex = [...images].findIndex(img => img.classList.contains('visible'));
-          const nextIndex = (currentIndex + 1) % images.length;
+      blogEntry.appendChild(carousel);
+      setInterval(() => {
+        const images = carousel.querySelectorAll('img');
+        const currentIndex = [...images].findIndex(img => img.classList.contains('visible'));
+        const nextIndex = (currentIndex + 1) % images.length;
 
-          images[currentIndex].classList.remove('visible');
-          images[currentIndex].classList.add('hidden');
-          images[nextIndex].classList.remove('next');
-          images[nextIndex].classList.add('visible');
+        // Update class names for the next image
+        images[currentIndex].classList.remove('visible');
+        images[currentIndex].classList.add('hidden');
+        images[nextIndex].classList.remove('next');
+        images[nextIndex].classList.add('visible');
 
-          // Ensure the next image is positioned correctly
-          images[nextIndex].classList.remove('hidden');
-          images[nextIndex].classList.add('next');
-        }, 5000); // Change image every 5 seconds
-      }
-
-      // Handle audio post
-      if (entry.audio) {
-        const audio = document.createElement('audio');
-        const source = document.createElement('source');
-        source.src = `audios/${entry.audio}`;
-        source.type = 'audio/mp3';
-        audio.appendChild(source);
-        audio.controls = true; // Add controls to audio element
-        blogEntry.appendChild(audio);
-      }
-
-      const content = document.createElement('p');
-      content.innerHTML = entry.content;
-      blogEntry.appendChild(content);
-
-      return blogEntry;
+        // Ensure the next image is positioned correctly
+        if (nextIndex + 1 < images.length) {
+          images[nextIndex + 1].classList.remove('hidden');
+          images[nextIndex + 1].classList.add('next');
+        } else {
+          images[0].classList.remove('hidden');
+          images[0].classList.add('next');
+        }
+      }, 5000); // Change image every 5 seconds
     }
 
-    // Populate the blog container
-    const blogContainer = document.getElementById('blog-container');
-    blogEntries.forEach(entry => {
-      blogContainer.appendChild(createBlogEntry(entry));
-    });
-  </script>
+    // Handle audio post
+    if (entry.audio) {
+      const audio = document.createElement('audio');
+      const source = document.createElement('source');
+      source.src = `audios/${entry.audio}`;
+      source.type = 'audio/mp3';
+      audio.appendChild(source);
+      audio.controls = true; // Add controls to audio element
+      blogEntry.appendChild(audio);
+    }
+
+    const content = document.createElement('p');
+    content.innerHTML = entry.content;
+    blogEntry.appendChild(content);
+
+    return blogEntry;
+  }
+</script>
 </body>
 </html>
