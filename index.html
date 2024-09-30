@@ -116,6 +116,8 @@
 
     .carousel img.visible {
       opacity: 1;
+      display: block;
+      /* Ensure they are block elements */
       transform: translate(-50%, 0);
     }
 
@@ -152,7 +154,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">10.0.0</p>
+      <p style="font-size: .75em;">10.0.1</p>
     </div>
   </header>
 
@@ -171,7 +173,7 @@
       {
         title: "(10) I got bored and made Kondraki! 9/29/2024 10:37 PM",
         images: [
-          "Insert Boss gif here."
+          "images/SCP_Foundation_logo.png" // Replace with a valid image path
         ],
         content: "So yeah, Kondraki exists now. (Don't mind the 12x4x12 Kondraki-Cube.)"
       },
