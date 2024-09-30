@@ -88,37 +88,35 @@
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      /* Ensure blog entry does not exceed this width */
+      overflow: auto;
+      /* Allow scrolling if content overflows */
     }
 
     .carousel {
       display: flex;
       justify-content: center;
-      /* Center images horizontally */
       position: relative;
       overflow: hidden;
-      height: 300px;
+      max-height: 300px;
+      /* Adjust this as needed */
     }
 
     .carousel img {
       max-width: 100%;
       height: auto;
       transition: opacity 1s ease, transform 1s ease;
-      /* Add transform transition */
       opacity: 0;
-      /* Start hidden */
       position: absolute;
-      /* Position images absolutely */
       left: 50%;
-      /* Center the images */
       transform: translateX(-50%);
       /* Centering adjustment */
     }
 
     .carousel img.visible {
       opacity: 1;
-      /* Make the image visible */
       transform: translate(-50%, 0);
-      /* Center the visible image */
     }
 
     .blog-entry h1 {
@@ -154,7 +152,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">9.6.2</p>
+      <p style="font-size: .75em;">10.0.0</p>
     </div>
   </header>
 
@@ -292,6 +290,7 @@
 
       return blogEntry;
     }
+
 
     function initializeCarousel(carousel) {
       let currentIndex = 0;
