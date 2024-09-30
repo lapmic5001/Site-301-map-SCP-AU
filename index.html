@@ -92,7 +92,6 @@
 
     .carousel {
       display: flex;
-      /* Use flexbox to center images */
       justify-content: center;
       /* Center images horizontally */
       position: relative;
@@ -102,17 +101,24 @@
 
     .carousel img {
       max-width: 100%;
-      /* Make sure the images don’t overflow */
       height: auto;
-      /* Maintain aspect ratio */
-      transition: opacity 1s ease;
+      transition: opacity 1s ease, transform 1s ease;
+      /* Add transform transition */
       opacity: 0;
       /* Start hidden */
+      position: absolute;
+      /* Position images absolutely */
+      left: 50%;
+      /* Center the images */
+      transform: translateX(-50%);
+      /* Centering adjustment */
     }
 
     .carousel img.visible {
       opacity: 1;
-      /* Visible */
+      /* Make the image visible */
+      transform: translate(-50%, 0);
+      /* Center the visible image */
     }
 
     .blog-entry h1 {
@@ -148,7 +154,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">9.6.1</p>
+      <p style="font-size: .75em;">9.6.2</p>
     </div>
   </header>
 
@@ -164,6 +170,13 @@
 
   <script>
     const blogEntries = [
+      {
+        title: "(10) I got bored and made Kondraki! 9/29/2024 10:37 PM",
+        images: [
+          "Insert Boss gif here."
+        ],
+        content: "So yeah, Kondraki exists now. (Don't mind the 12x4x12 Kondraki-Cube.)"
+      },
       {
         title: "(9) We got Walls! 9/24/2024 9:24 PM",
         images: [
