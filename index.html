@@ -185,7 +185,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">10.0.5</p>
+      <p style="font-size: .75em;">10.0.6</p>
     </div>
   </header>
 
@@ -337,11 +337,12 @@
 
     function initializeCarousel(carousel) {
       const images = carousel.querySelectorAll('img');
-      images[0].classList.add('visible'); // Ensure the first image is visible initially
+      images[0].classList.add('visible'); // Show the first image initially
       images.forEach((img, index) => {
-        img.style.display = index === 0 ? 'block' : 'none'; // Show the first image, hide the others
+        img.style.display = index === 0 ? 'block' : 'none'; // Only show the first image
       });
     }
+
 
     function navigateCarousel(carousel, direction) {
       const images = carousel.querySelectorAll('img');
@@ -355,12 +356,30 @@
       images[currentIndex].style.display = 'block'; // Show the next image
     }
 
+
     // Append each blog entry to the blog container
     const blogContainer = document.getElementById('blog-container');
     blogEntries.forEach(entry => {
       const blogEntryElement = createBlogEntry(entry);
       blogContainer.appendChild(blogEntryElement);
     });
+
+    entry.images.forEach((src, index) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Blog Image ${index + 1}`;
+
+      img.onload = () => {
+        console.log(`Image ${index + 1} loaded successfully: ${src}`);
+      };
+
+      img.onerror = () => {
+        console.error(`Failed to load image ${index + 1}: ${src}`);
+      };
+
+      carousel.appendChild(img);
+    });
+
 
   </script>
 </body>
