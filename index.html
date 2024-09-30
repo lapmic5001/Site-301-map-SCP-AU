@@ -67,7 +67,7 @@
       padding: 10px 0;
     }
 
-    nav>a {
+    nav > a {
       font-size: xx-large;
       color: black;
       margin: 0 15px;
@@ -94,26 +94,18 @@
       position: relative;
       overflow: hidden;
       height: 300px;
-      /* Set a fixed height for the carousel */
     }
 
     .carousel img {
       position: absolute;
       width: 100%;
       height: auto;
-      transition: transform 1s ease;
-    }
-
-    .carousel img.hidden {
-      transform: translateX(-100%);
+      transition: opacity 1s ease;
+      opacity: 0; /* Start hidden */
     }
 
     .carousel img.visible {
-      transform: translateX(0);
-    }
-
-    .carousel img.next {
-      transform: translateX(100%);
+      opacity: 1; /* Visible */
     }
 
     .blog-entry h1 {
@@ -149,7 +141,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">9.5.1</p>
+      <p style="font-size: .75em;">9.6.0</p>
     </div>
   </header>
 
@@ -177,7 +169,6 @@
       {
         title: "(8) Audio Sneak Peaks 9/23/2024 10:47 PM",
         audio: "Kondraki's Theme_ King of Butterflies (SCP AU).mp3",
-        author: "Twinrova",
         content: "Sneak peek to some boss music, composed by your very own; <a href='https://onlinesequencer.net/members/142671'>Twinrova</a>!"
       },
       {
@@ -238,7 +229,6 @@
       }
     ];
 
-
     function createBlogEntry(entry) {
       const blogEntry = document.createElement('div');
       blogEntry.className = 'blog-entry';
@@ -256,31 +246,12 @@
           const img = document.createElement('img');
           img.src = src;
           img.alt = `Blog Image ${index + 1}`;
-          img.className = index === 0 ? 'visible' : 'next'; // Set the first image as visible
+          img.className = index === 0 ? 'visible' : ''; // Set the first image as visible
           carousel.appendChild(img);
         });
 
         blogEntry.appendChild(carousel);
-        setInterval(() => {
-          const images = carousel.querySelectorAll('img');
-          const currentIndex = [...images].findIndex(img => img.classList.contains('visible'));
-          const nextIndex = (currentIndex + 1) % images.length;
-
-          // Update class names for the next image
-          images[currentIndex].classList.remove('visible');
-          images[currentIndex].classList.add('hidden');
-          images[nextIndex].classList.remove('next');
-          images[nextIndex].classList.add('visible');
-
-          // Ensure the next image is positioned correctly
-          if (nextIndex + 1 < images.length) {
-            images[nextIndex + 1].classList.remove('hidden');
-            images[nextIndex + 1].classList.add('next');
-          } else {
-            images[0].classList.remove('hidden');
-            images[0].classList.add('next');
-          }
-        }, 5000); // Change image every 5 seconds
+        initializeCarousel(carousel);
       }
 
       // Handle audio post
@@ -294,11 +265,25 @@
         blogEntry.appendChild(audio);
       }
 
+      // Append content
       const content = document.createElement('p');
       content.innerHTML = entry.content;
       blogEntry.appendChild(content);
 
       return blogEntry;
+    }
+
+    function initializeCarousel(carousel) {
+      let currentIndex = 0;
+      const images = carousel.querySelectorAll('img');
+
+      function switchImage() {
+        images[currentIndex].classList.remove('visible');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('visible');
+      }
+
+      setInterval(switchImage, 10000);
     }
 
     // Append each blog entry to the blog container
@@ -309,5 +294,4 @@
     });
   </script>
 </body>
-
 </html>
