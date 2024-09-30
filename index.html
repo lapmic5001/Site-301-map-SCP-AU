@@ -67,7 +67,7 @@
       padding: 10px 0;
     }
 
-    nav > a {
+    nav>a {
       font-size: xx-large;
       color: black;
       margin: 0 15px;
@@ -91,21 +91,28 @@
     }
 
     .carousel {
+      display: flex;
+      /* Use flexbox to center images */
+      justify-content: center;
+      /* Center images horizontally */
       position: relative;
       overflow: hidden;
       height: 300px;
     }
 
     .carousel img {
-      position: absolute;
-      width: 100%;
+      max-width: 100%;
+      /* Make sure the images don’t overflow */
       height: auto;
+      /* Maintain aspect ratio */
       transition: opacity 1s ease;
-      opacity: 0; /* Start hidden */
+      opacity: 0;
+      /* Start hidden */
     }
 
     .carousel img.visible {
-      opacity: 1; /* Visible */
+      opacity: 1;
+      /* Visible */
     }
 
     .blog-entry h1 {
@@ -141,7 +148,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">9.6.0</p>
+      <p style="font-size: .75em;">9.6.1</p>
     </div>
   </header>
 
@@ -294,4 +301,5 @@
     });
   </script>
 </body>
+
 </html>
