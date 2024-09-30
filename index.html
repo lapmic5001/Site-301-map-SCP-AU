@@ -121,6 +121,34 @@
       transform: translate(-50%, 0);
     }
 
+    .carousel button {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      font-size: 2em;
+      cursor: pointer;
+      margin: 0 10px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      /* Make sure buttons are above images */
+    }
+
+    .carousel button:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .carousel button:nth-child(2) {
+      /* Left button */
+      left: 10px;
+    }
+
+    .carousel button:nth-child(3) {
+      /* Right button */
+      right: 10px;
+    }
+
+
     .blog-entry h1 {
       font-size: 1.5em;
       color: #333;
@@ -154,7 +182,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">10.0.3</p>
+      <p style="font-size: .75em;">10.0.4</p>
     </div>
   </header>
 
@@ -270,6 +298,18 @@
           carousel.appendChild(img);
         });
 
+        // Create navigation buttons
+        const leftButton = document.createElement('button');
+        leftButton.innerHTML = '&lt;'; // '<' character
+        leftButton.onclick = () => navigateCarousel(carousel, -1);
+
+        const rightButton = document.createElement('button');
+        rightButton.innerHTML = '&gt;'; // '>' character
+        rightButton.onclick = () => navigateCarousel(carousel, 1);
+
+        carousel.appendChild(leftButton);
+        carousel.appendChild(rightButton);
+
         blogEntry.appendChild(carousel);
         initializeCarousel(carousel);
       }
@@ -293,19 +333,15 @@
       return blogEntry;
     }
 
-
-    function initializeCarousel(carousel) {
-      let currentIndex = 0;
+    function navigateCarousel(carousel, direction) {
       const images = carousel.querySelectorAll('img');
+      let currentIndex = Array.from(images).findIndex(img => img.classList.contains('visible'));
 
-      function switchImage() {
-        images[currentIndex].classList.remove('visible');
-        currentIndex = (currentIndex + 1) % images.length;
-        images[currentIndex].classList.add('visible');
-      }
-
-      setInterval(switchImage, 10000);
+      images[currentIndex].classList.remove('visible');
+      currentIndex = (currentIndex + direction + images.length) % images.length; // Wrap around
+      images[currentIndex].classList.add('visible');
     }
+
 
     // Append each blog entry to the blog container
     const blogContainer = document.getElementById('blog-container');
