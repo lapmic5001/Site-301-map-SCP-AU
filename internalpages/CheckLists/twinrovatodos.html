@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWINROVA MAKE YER SONGS!</title>
+  <link rel="icon" type="image/x-icon" href="images/SCP_Foundation_logo.png">
+  <style>
+  </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable Checklist</title>
+    <style>
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        .subtasks {
+            display: none;
+            margin-left: 20px;
+        }
+        .toggle {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Checklist</h1>
+<ul class="checklist">
+    <li>
+        <span class="toggle">Themes</span>
+        <ul class="subtasks">
+            <li><input type="checkbox" disabled>Fanmade SCP Main Theme (WIP) | In Periculum Mortis</li>
+            <li><input type="checkbox" disabled>Trebuchet's Theme: Trust No One (SCP AU WIP)</li>
+            <li><input type="checkbox" disabled>Streak's Theme: Dance of Joy (Fanmade SCP AU WIP)</li>
+        </ul>
+    </li>
+    <li>
+        <span class="toggle">Zelda/Hollow Knight/Undertale/Other</span>
+        <ul class="subtasks">
+            <li><input type="checkbox" disabled>Revali, Ace Archer & Aviator (Piano Arrangement WIP) | Zelda, Hyrule Warriors: Age of Calamity</li>
+            <li><input type="checkbox" disabled>Dryya's Theme | Fanmade Hollow Knight Song (WIP)</li>
+            <li><input type="checkbox" disabled>Be Internet Awesome | Interland Main Theme Remix (WIP)</li>
+            <li><input type="checkbox" disabled>Gerudo Valley (Cover) | The Legend of Zelda: Ocarina of Time (WIP)</li>
+            <li><input type="checkbox" disabled>Attack on Divine Beast Vah Ruta | The Legend of Zelda: Breath of the Wild (WIP)</li>
+            <li><input type="checkbox" disabled>Hollow Knight | The Miner's Song (Bury My Mother Pale And Slight) WIP</li>
+        </ul>
+    </li>
+    <li>
+        <span class="toggle">Requests</span>
+        <ul class="subtasks">
+            <li><input type="checkbox" disabled>Grimm Troupe | Hollow Knight (Request WIP)</li>
+            <li><input type="checkbox" disabled> Subtask 3.2</li>
+        </ul>
+    </li>
+</ul>
+
+<script>
+    const toggles = document.querySelectorAll('.toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const subtasks = toggle.nextElementSibling;
+            subtasks.style.display = subtasks.style.display === 'none' || subtasks.style.display === '' ? 'block' : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
