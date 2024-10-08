@@ -254,8 +254,30 @@
           const img = document.createElement('img');
           img.src = image;
           img.alt = "Blog Image"; // Add alt text for accessibility
-          img.onclick = () => showEnlargedImage(image); // Set click handler
-          gallery.appendChild(img);
+
+          // Set a timeout to check if the image loads
+          const timeout = setTimeout(() => {
+            img.src = ''; // Clear the image source
+            const errorMsg = document.createElement('p');
+            errorMsg.innerText = "Image corrupted or failed to load.";
+            errorMsg.style.color = "red"; // Error message style
+            gallery.appendChild(errorMsg);
+          }, 3000); // 3 seconds timeout
+
+          img.onload = () => {
+            clearTimeout(timeout); // Clear the timeout if the image loads successfully
+            img.onclick = () => showEnlargedImage(image); // Set click handler
+            gallery.appendChild(img);
+          };
+
+          img.onerror = () => {
+            clearTimeout(timeout); // Clear the timeout on error
+            img.src = ''; // Clear the image source
+            const errorMsg = document.createElement('p');
+            errorMsg.innerText = "Image corrupted or failed to load.";
+            errorMsg.style.color = "red"; // Error message style
+            gallery.appendChild(errorMsg);
+          };
         });
 
         entryDiv.appendChild(gallery);
@@ -306,13 +328,14 @@
     blogEntries.forEach(entry => createBlogEntry(entry));
 
 
+
   </script>
   <footer>
     <div class="hover-content">
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.5.1</p>
+      <p style="font-size: .75em;">11.6.0</p>
     </div>
   </footer>
 </body>
