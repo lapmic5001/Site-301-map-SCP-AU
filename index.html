@@ -129,7 +129,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.3.2</p>
+      <p style="font-size: .75em;">11.4.0</p>
     </div>
   </header>
 
@@ -241,6 +241,7 @@
       title.innerHTML = entry.title;
       entryDiv.appendChild(title);
 
+      // Handle images and GIFs
       if (entry.images) {
         const gallery = document.createElement('div');
         gallery.classList.add('gallery');
@@ -256,6 +257,17 @@
         entryDiv.appendChild(gallery);
       }
 
+      // Handle audio posts
+      if (entry.audio) {
+        const audioPlayer = document.createElement('audio');
+        audioPlayer.controls = true;
+        const source = document.createElement('source');
+        source.src = entry.audio;
+        source.type = 'audio/mpeg'; // Adjust the type as needed
+        audioPlayer.appendChild(source);
+        entryDiv.appendChild(audioPlayer);
+      }
+
       const content = document.createElement('p');
       content.innerHTML = entry.content;
       entryDiv.appendChild(content);
@@ -263,6 +275,7 @@
       blogContainer.appendChild(entryDiv);
     }
 
+    // Show enlarged image
     function showEnlargedImage(src) {
       const enlargedImageDiv = document.createElement('div');
       enlargedImageDiv.classList.add('enlarged-image');
@@ -287,6 +300,7 @@
 
     // Create blog entries
     blogEntries.forEach(entry => createBlogEntry(entry));
+
 
   </script>
 </body>
