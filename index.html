@@ -185,7 +185,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.1.1</p>
+      <p style="font-size: .75em;">11.2.0</p>
     </div>
   </header>
 
@@ -287,53 +287,74 @@
       }
     ];
 
-    function createBlogEntry(entry) {
-      const blogEntry = document.createElement('div');
-      blogEntry.className = 'blog-entry';
+    const blogContainer = document.getElementById('blog-container');
 
-      // Create title
+    function createBlogEntry(entry) {
+      const entryDiv = document.createElement('div');
+      entryDiv.classList.add('blog-entry');
+
       const title = document.createElement('h1');
       title.innerHTML = entry.title;
-      blogEntry.appendChild(title);
+      entryDiv.appendChild(title);
 
-      // Handle GIFs specifically
-      if (entry.gif && entry.gif.length > 0) {
-        const img = document.createElement('img');
-        img.src = entry.gif[0]; // Only show the first GIF for now
-        img.alt = 'Blog GIF';
-        blogEntry.appendChild(img);
-      }
-      // Handle image carousel for multiple images
-      else if (entry.images && entry.images.length > 1) {
-        const carousel = createCarousel(entry.images);
-        blogEntry.appendChild(carousel);
-      }
-      // Handle single image
-      else if (entry.images && entry.images.length === 1) {
-        const img = document.createElement('img');
-        img.src = entry.images[0];
-        img.alt = 'Blog Image';
-        blogEntry.appendChild(img);
+      if (entry.images) {
+        const carousel = document.createElement('div');
+        carousel.classList.add('carousel');
+
+        entry.images.forEach((image, index) => {
+          const img = document.createElement('img');
+          img.src = image;
+          if (index === 0) img.classList.add('visible'); // Show the first image
+          carousel.appendChild(img);
+        });
+
+        const leftButton = document.createElement('button');
+        leftButton.innerHTML = '❮';
+        leftButton.onclick = () => showImage(carousel, -1);
+        carousel.appendChild(leftButton);
+
+        const rightButton = document.createElement('button');
+        rightButton.innerHTML = '❯';
+        rightButton.onclick = () => showImage(carousel, 1);
+        carousel.appendChild(rightButton);
+
+        entryDiv.appendChild(carousel);
       }
 
-      // Handle audio post
+      if (entry.gif) {
+        const gif = document.createElement('img');
+        gif.src = entry.gif[0];
+        entryDiv.appendChild(gif);
+      }
+
       if (entry.audio) {
         const audio = document.createElement('audio');
-        audio.controls = true; // Add controls to audio element
+        audio.controls = true;
         const source = document.createElement('source');
-        source.src = `audios/${entry.audio}`;
-        source.type = 'audio/mp3';
+        source.src = entry.audio;
+        source.type = 'audio/mpeg';
         audio.appendChild(source);
-        blogEntry.appendChild(audio);
+        entryDiv.appendChild(audio);
       }
 
-      // Append content
       const content = document.createElement('p');
       content.innerHTML = entry.content;
-      blogEntry.appendChild(content);
+      entryDiv.appendChild(content);
 
-      return blogEntry;
+      blogContainer.appendChild(entryDiv);
     }
+
+    function showImage(carousel, direction) {
+      const images = carousel.querySelectorAll('img');
+      let currentIndex = Array.from(images).findIndex(img => img.classList.contains('visible'));
+      images[currentIndex].classList.remove('visible');
+
+      currentIndex = (currentIndex + direction + images.length) % images.length;
+      images[currentIndex].classList.add('visible');
+    }
+
+    // Create blog entries
+    blogEntries.forEach(entry => createBlogEntry(entry));
 
   </script>
 </body>
