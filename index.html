@@ -16,6 +16,7 @@
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       background-color: darkgoldenrod;
     }
+
     header {
       width: 100%;
       background-color: #333;
@@ -184,7 +185,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.0.8</p>
+      <p style="font-size: .75em;">11.0.9</p>
     </div>
   </header>
 
@@ -297,42 +298,18 @@
 
       // Handle image carousel
       if (entry.images && entry.images.length > 0) {
-        const carousel = document.createElement('div');
-        carousel.className = 'carousel';
-
-        entry.images.forEach((src, index) => {
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = `Blog Image ${index + 1}`;
-          img.onload = () => console.log(`Image ${index + 1} loaded successfully: ${src}`);
-          img.onerror = () => console.error(`Failed to load image ${index + 1}: ${src}`);
-          carousel.appendChild(img);
-        });
-
-        // Create navigation buttons
-        const leftButton = document.createElement('button');
-        leftButton.innerHTML = '&lt;'; // '<' character
-        leftButton.onclick = () => navigateCarousel(carousel, -1);
-
-        const rightButton = document.createElement('button');
-        rightButton.innerHTML = '&gt;'; // '>' character
-        rightButton.onclick = () => navigateCarousel(carousel, 1);
-
-        carousel.appendChild(leftButton);
-        carousel.appendChild(rightButton);
-
+        const carousel = createCarousel(entry.images);
         blogEntry.appendChild(carousel);
-        initializeCarousel(carousel); // Initialize the carousel
       }
 
       // Handle audio post
       if (entry.audio) {
         const audio = document.createElement('audio');
+        audio.controls = true; // Add controls to audio element
         const source = document.createElement('source');
         source.src = `audios/${entry.audio}`;
         source.type = 'audio/mp3';
         audio.appendChild(source);
-        audio.controls = true; // Add controls to audio element
         blogEntry.appendChild(audio);
       }
 
@@ -342,6 +319,35 @@
       blogEntry.appendChild(content);
 
       return blogEntry;
+    }
+
+    function createCarousel(images) {
+      const carousel = document.createElement('div');
+      carousel.className = 'carousel';
+
+      images.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Blog Image ${index + 1}`;
+        img.onload = () => console.log(`Image ${index + 1} loaded successfully: ${src}`);
+        img.onerror = () => console.error(`Failed to load image ${index + 1}: ${src}`);
+        carousel.appendChild(img);
+      });
+
+      // Create navigation buttons
+      const leftButton = document.createElement('button');
+      leftButton.innerHTML = '&lt;'; // '<' character
+      leftButton.onclick = () => navigateCarousel(carousel, -1);
+
+      const rightButton = document.createElement('button');
+      rightButton.innerHTML = '&gt;'; // '>' character
+      rightButton.onclick = () => navigateCarousel(carousel, 1);
+
+      carousel.appendChild(leftButton);
+      carousel.appendChild(rightButton);
+
+      initializeCarousel(carousel); // Initialize the carousel
+      return carousel;
     }
 
     function initializeCarousel(carousel) {
@@ -368,22 +374,16 @@
       images[nextIndex].style.display = 'block'; // Show the next image
     }
 
-    // Assuming blogEntries is defined somewhere in your code
-    const blogContainer = document.getElementById('blog-container');
-    blogEntries.forEach(entry => {
-      const blogEntryElement = createBlogEntry(entry);
-      blogContainer.appendChild(blogEntryElement);
+    // Add keyboard navigation
+    document.addEventListener('keydown', (event) => {
+      const carousel = document.querySelector('.carousel'); // Adjust this selector to target your specific carousel
+      if (event.key === 'ArrowLeft') {
+        navigateCarousel(carousel, -1);
+      } else if (event.key === 'ArrowRight') {
+        navigateCarousel(carousel, 1);
+      }
     });
 
-    // Add keyboard navigation
-document.addEventListener('keydown', (event) => {
-  const carousel = document.querySelector('.carousel'); // Adjust this selector to target your specific carousel
-  if (event.key === 'ArrowLeft') {
-    navigateCarousel(carousel, -1);
-  } else if (event.key === 'ArrowRight') {
-    navigateCarousel(carousel, 1);
-  }
-});
 
 
 
