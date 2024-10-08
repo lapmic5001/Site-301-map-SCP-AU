@@ -27,38 +27,6 @@
       position: relative;
     }
 
-    .header-content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.5s;
-    }
-
-    .header-content.hidden {
-      opacity: 0;
-    }
-
-    .hover-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility 0s, opacity 0.5s;
-    }
-
-    header:hover .header-content {
-      opacity: 0;
-    }
-
-    header:hover .hover-content {
-      visibility: visible;
-      opacity: 1;
-    }
-
     nav {
       width: 100%;
       background-color: cadetblue;
@@ -88,69 +56,45 @@
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
-      /* Ensure blog entry does not exceed this width */
-      overflow: auto;
-      /* Allow scrolling if content overflows */
     }
 
-    .carousel {
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .enlarged-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
       display: flex;
       justify-content: center;
-      position: relative;
-      overflow: hidden;
-      max-height: 300px;
-      /* Adjust this as needed */
-    }
-
-    .carousel img {
-      max-width: 100%;
-      height: auto;
-      transition: opacity 1s ease, transform 1s ease;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
       opacity: 0;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      /* Centering adjustment */
-      display: none;
-      /* Hide images by default */
+      transition: visibility 0s, opacity 0.2s;
     }
 
-    .carousel img.visible {
-      opacity: 1;
-      display: block;
-      /* Show only the visible image */
-      transform: translate(-50%, 0);
+    .enlarged-image img {
+      max-width: 90%;
+      max-height: 90%;
     }
-
-
-    .carousel button {
-      background-color: rgba(255, 255, 255, 0.7);
-      border: none;
-      font-size: 2em;
-      cursor: pointer;
-      margin: 0 10px;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1;
-      /* Make sure buttons are above images */
-    }
-
-    .carousel button:hover {
-      background-color: rgba(255, 255, 255, 0.9);
-    }
-
-    .carousel button:nth-child(2) {
-      /* Left button */
-      left: 10px;
-    }
-
-    .carousel button:nth-child(3) {
-      /* Right button */
-      right: 10px;
-    }
-
 
     .blog-entry h1 {
       font-size: 1.5em;
@@ -185,7 +129,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.2.0</p>
+      <p style="font-size: .75em;">11.3.1</p>
     </div>
   </header>
 
@@ -202,11 +146,11 @@
   <script>
     const blogEntries = [
       {
-        title: "(11) I got bored so Kondraki! 10/5/2024 5:00 PM",
+        title: "(11) Filling the 'surface' area 10/5/2024 5:00 PM",
         images: [
           "images/Screenshot 2024-10-05 165616.png"
         ],
-        content: "So yeah, Kondraki exists now. (Don't mind the 12x4x12 Kondraki-Cube.)"
+        content: "added some windows to the surface. (If it's too much dev team, YELL AT ME!)"
       },
       {
         title: "(10) I got bored so Kondraki! 9/29/2024 10:37 PM",
@@ -298,43 +242,18 @@
       entryDiv.appendChild(title);
 
       if (entry.images) {
-        const carousel = document.createElement('div');
-        carousel.classList.add('carousel');
+        const gallery = document.createElement('div');
+        gallery.classList.add('gallery');
 
-        entry.images.forEach((image, index) => {
+        entry.images.forEach(image => {
           const img = document.createElement('img');
           img.src = image;
-          if (index === 0) img.classList.add('visible'); // Show the first image
-          carousel.appendChild(img);
+          img.alt = "Blog Image"; // Add alt text for accessibility
+          img.onclick = () => showEnlargedImage(image); // Set click handler
+          gallery.appendChild(img);
         });
 
-        const leftButton = document.createElement('button');
-        leftButton.innerHTML = '❮';
-        leftButton.onclick = () => showImage(carousel, -1);
-        carousel.appendChild(leftButton);
-
-        const rightButton = document.createElement('button');
-        rightButton.innerHTML = '❯';
-        rightButton.onclick = () => showImage(carousel, 1);
-        carousel.appendChild(rightButton);
-
-        entryDiv.appendChild(carousel);
-      }
-
-      if (entry.gif) {
-        const gif = document.createElement('img');
-        gif.src = entry.gif[0];
-        entryDiv.appendChild(gif);
-      }
-
-      if (entry.audio) {
-        const audio = document.createElement('audio');
-        audio.controls = true;
-        const source = document.createElement('source');
-        source.src = entry.audio;
-        source.type = 'audio/mpeg';
-        audio.appendChild(source);
-        entryDiv.appendChild(audio);
+        entryDiv.appendChild(gallery);
       }
 
       const content = document.createElement('p');
@@ -344,13 +263,26 @@
       blogContainer.appendChild(entryDiv);
     }
 
-    function showImage(carousel, direction) {
-      const images = carousel.querySelectorAll('img');
-      let currentIndex = Array.from(images).findIndex(img => img.classList.contains('visible'));
-      images[currentIndex].classList.remove('visible');
+    function showEnlargedImage(src) {
+      const enlargedImageDiv = document.createElement('div');
+      enlargedImageDiv.classList.add('enlarged-image');
 
-      currentIndex = (currentIndex + direction + images.length) % images.length;
-      images[currentIndex].classList.add('visible');
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Enlarged Image"; // Add alt text for accessibility
+
+      enlargedImageDiv.appendChild(img);
+      document.body.appendChild(enlargedImageDiv);
+
+      enlargedImageDiv.style.visibility = 'visible';
+      enlargedImageDiv.style.opacity = '1';
+
+      enlargedImageDiv.onclick = () => {
+        enlargedImageDiv.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(enlargedImageDiv);
+        }, 200);
+      };
     }
 
     // Create blog entries

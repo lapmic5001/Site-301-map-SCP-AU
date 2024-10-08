@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICIAL SITE 301 DEV LOG</title>
+    <link rel="icon" type="image/x-icon" href="images/SCP_Foundation_logo.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: darkgoldenrod;
+        }
+
+        header {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 3em;
+            position: relative;
+        }
+
+        nav {
+            width: 100%;
+            background-color: cadetblue;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        nav>a {
+            font-size: xx-large;
+            color: black;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+
+        #blog-container {
+            margin-top: 100px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .blog-entry {
+            margin-bottom: 50px;
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .enlarged-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.2s;
+        }
+
+        .enlarged-image img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .blog-entry h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .blog-entry p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">SCP Research Site 301 Game Dev Blog</div>
+    </header>
+
+    <nav>
+        <a href="internalpages/site301map.html">Underground Map</a>
+        <a>|</a>
+        <a href="internalpages/site301surfacemap.html">Surface Map</a>
+        <a>|</a>
+        <a href="internalpages/site301residentialcomplexmap.html">Residential Complex Map</a>
+    </nav>
+
+    <div id="blog-container"></div>
+
+    <script>
+        const blogEntries = [
+            {
+                title: "(11) I got bored so Kondraki! 10/5/2024 5:00 PM",
+                images: [
+                    "images/Screenshot 2024-10-05 165616.png"
+                ],
+                content: "So yeah, Kondraki exists now."
+            },
+            // Add more entries as needed...
+        ];
+
+        const blogContainer = document.getElementById('blog-container');
+
+        function createBlogEntry(entry) {
+            const entryDiv = document.createElement('div');
+            entryDiv.classList.add('blog-entry');
+
+            const title = document.createElement('h1');
+            title.innerHTML = entry.title;
+            entryDiv.appendChild(title);
+
+            if (entry.images) {
+                const gallery = document.createElement('div');
+                gallery.classList.add('gallery');
+
+                entry.images.forEach(image => {
+                    const img = document.createElement('img');
+                    img.src = image;
+                    img.alt = "Blog Image"; // Add alt text for accessibility
+                    img.onclick = () => showEnlargedImage(image); // Set click handler
+                    gallery.appendChild(img);
+                });
+
+                entryDiv.appendChild(gallery);
+            }
+
+            const content = document.createElement('p');
+            content.innerHTML = entry.content;
+            entryDiv.appendChild(content);
+
+            blogContainer.appendChild(entryDiv);
+        }
+
+        function showEnlargedImage(src) {
+            const enlargedImageDiv = document.createElement('div');
+            enlargedImageDiv.classList.add('enlarged-image');
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = "Enlarged Image"; // Add alt text for accessibility
+
+            enlargedImageDiv.appendChild(img);
+            document.body.appendChild(enlargedImageDiv);
+
+            enlargedImageDiv.style.visibility = 'visible';
+            enlargedImageDiv.style.opacity = '1';
+
+            enlargedImageDiv.onclick = () => {
+                enlargedImageDiv.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(enlargedImageDiv);
+                }, 200);
+            };
+        }
+
+        // Create blog entries
+        blogEntries.forEach(entry => createBlogEntry(entry));
+
+    </script>
+</body>
+
+</html>
