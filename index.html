@@ -263,7 +263,7 @@
             errorMsg.innerText = "Image corrupted or failed to load.";
             errorMsg.style.color = "red"; // Error message style
             gallery.appendChild(errorMsg);
-          }, 3000); // 3 seconds timeout
+          }, 6000); // 3 seconds timeout
 
           img.onload = () => {
             clearTimeout(timeout); // Clear the timeout if the image loads successfully
@@ -335,7 +335,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.6.1</p>
+      <p style="font-size: .75em;">11.6.2</p>
     </div>
   </footer>
 </body>
