@@ -185,7 +185,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">10.0.6</p>
+      <p style="font-size: .75em;">11.0.7</p>
     </div>
   </header>
 
@@ -202,9 +202,16 @@
   <script>
     const blogEntries = [
       {
+        title: "(11) I got bored so Kondraki! 10/5/2024 5:00 PM",
+        images: [
+          "images/Screenshot 2024-10-05 165616.png"
+        ],
+        content: "So yeah, Kondraki exists now. (Don't mind the 12x4x12 Kondraki-Cube.)"
+      },
+      {
         title: "(10) I got bored so Kondraki! 9/29/2024 10:37 PM",
         images: [
-          "images/SCP_Foundation_logo.png" // Replace with a valid image path
+          "gifs/RobloxStudioBeta_E1ywhjhe9D.gif"
         ],
         content: "So yeah, Kondraki exists now. (Don't mind the 12x4x12 Kondraki-Cube.)"
       },
@@ -284,6 +291,7 @@
       const blogEntry = document.createElement('div');
       blogEntry.className = 'blog-entry';
 
+      // Create title
       const title = document.createElement('h1');
       title.innerHTML = entry.title;
       blogEntry.appendChild(title);
@@ -297,6 +305,8 @@
           const img = document.createElement('img');
           img.src = src;
           img.alt = `Blog Image ${index + 1}`;
+          img.onload = () => console.log(`Image ${index + 1} loaded successfully: ${src}`);
+          img.onerror = () => console.error(`Failed to load image ${index + 1}: ${src}`);
           carousel.appendChild(img);
         });
 
@@ -337,48 +347,35 @@
 
     function initializeCarousel(carousel) {
       const images = carousel.querySelectorAll('img');
-      images[0].classList.add('visible'); // Show the first image initially
-      images.forEach((img, index) => {
-        img.style.display = index === 0 ? 'block' : 'none'; // Only show the first image
-      });
+      if (images.length > 0) {
+        images[0].classList.add('visible'); // Show the first image initially
+        images.forEach((img, index) => {
+          img.style.display = index === 0 ? 'block' : 'none'; // Only show the first image
+        });
+      }
     }
-
 
     function navigateCarousel(carousel, direction) {
       const images = carousel.querySelectorAll('img');
-      let currentIndex = Array.from(images).findIndex(img => img.classList.contains('visible'));
+      const currentIndex = Array.from(images).findIndex(img => img.classList.contains('visible'));
+
+      if (currentIndex === -1) return; // No image is visible
 
       images[currentIndex].classList.remove('visible');
       images[currentIndex].style.display = 'none'; // Hide current image
 
-      currentIndex = (currentIndex + direction + images.length) % images.length; // Wrap around
-      images[currentIndex].classList.add('visible');
-      images[currentIndex].style.display = 'block'; // Show the next image
+      const nextIndex = (currentIndex + direction + images.length) % images.length; // Wrap around
+      images[nextIndex].classList.add('visible');
+      images[nextIndex].style.display = 'block'; // Show the next image
     }
 
-
-    // Append each blog entry to the blog container
+    // Assuming blogEntries is defined somewhere in your code
     const blogContainer = document.getElementById('blog-container');
     blogEntries.forEach(entry => {
       const blogEntryElement = createBlogEntry(entry);
       blogContainer.appendChild(blogEntryElement);
     });
 
-    entry.images.forEach((src, index) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = `Blog Image ${index + 1}`;
-
-      img.onload = () => {
-        console.log(`Image ${index + 1} loaded successfully: ${src}`);
-      };
-
-      img.onerror = () => {
-        console.error(`Failed to load image ${index + 1}: ${src}`);
-      };
-
-      carousel.appendChild(img);
-    });
 
 
   </script>
