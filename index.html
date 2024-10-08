@@ -145,7 +145,8 @@
     <a href="internalpages/site301residentialcomplexmap.html">Residential Complex Map</a>
   </nav>
 
-  <div id="blog-container"></div>
+  <main id="blog-container"></main>
+
 
   <script>
     const blogEntries = [
@@ -154,7 +155,7 @@
         images: [
           "images/Screenshot 2024-10-05 165616.png"
         ],
-        content: "added some windows to the surface. (If it's too much dev team, YELL AT ME!)"
+        content: "added some windows to the surface. (If it's too much, dev team, YELL AT ME!)"
       },
       {
         title: "(10) I got bored so Kondraki! 9/29/2024 10:37 PM",
@@ -271,13 +272,12 @@
           };
 
           img.onerror = () => {
-            clearTimeout(timeout); // Clear the timeout on error
-            img.src = ''; // Clear the image source
-            const errorMsg = document.createElement('p');
-            errorMsg.innerText = "Image corrupted or failed to load.";
-            errorMsg.style.color = "red"; // Error message style
-            gallery.appendChild(errorMsg);
+            clearTimeout(timeout);
+            img.src = 'images/esliegteinfehlervor.png'; // Path to placeholder image
+            img.alt = "Image failed to load"; // Update alt text for accessibility
+            img.title = "Placeholder for image after not loading for an extended period of time. Image may be corrupted or incompatible with your device."
           };
+
         });
 
         entryDiv.appendChild(gallery);
@@ -335,7 +335,7 @@
       <a onclick="alert('You can&#39;t go back anymore, fool!')">↩</a>
       <button onclick="location.reload();">⟳</button>
       <p>Update:</p>
-      <p style="font-size: .75em;">11.6.0</p>
+      <p style="font-size: .75em;">11.6.1</p>
     </div>
   </footer>
 </body>
